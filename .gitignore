@@ -1,7 +1,10 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
-# Ignore bundler config
-/.bundle
+# Ignore .lock file as this is a gem
+Gemfile.lock
+
+# Ignore gem
+multidb-*.gem
 
 # Ignore all logfiles and tempfiles.
 testapp_*/coverage
