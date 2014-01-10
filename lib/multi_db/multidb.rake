@@ -20,9 +20,9 @@ tasks.delete 'db:test:purge'
 
 db_namespace = namespace :db do
   namespace :create do
-    desc 'Runs create for sessions, master and org database.'
+    desc 'Runs create for sessions and master databases.'
     task :multi => [:load_config] do
-      [ 'sessions', 'master', nil ].each do |org|
+      [ 'sessions', 'master' ].each do |org|
         ENV['RAILS_ORG'] = org
         db_namespace[:create].execute
       end
@@ -30,9 +30,9 @@ db_namespace = namespace :db do
   end
   
   namespace :drop do
-    desc 'Runs drop for sessions, master and org database.'
+    desc 'Runs drop for sessions and master databases.'
     task :multi => [:load_config] do
-      [ 'sessions', 'master', nil ].each do |org|
+      [ 'sessions', 'master' ].each do |org|
         ENV['RAILS_ORG'] = org
         db_namespace[:drop].execute
       end
@@ -40,9 +40,9 @@ db_namespace = namespace :db do
   end
   
   namespace :setup do
-    desc 'Runs setup for sessions, master and org database.'
+    desc 'Runs setup for sessions and master databases.'
     task :multi => [:load_config] do
-      [ 'sessions', 'master', nil ].each do |org|
+      [ 'sessions', 'master' ].each do |org|
         ENV['RAILS_ORG'] = org
         db_namespace[:create].execute
         db_namespace['schema:load'].execute
