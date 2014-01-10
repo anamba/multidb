@@ -2,7 +2,7 @@ PATH
   remote: ..
   specs:
     multidb (3.2.0)
-      activerecord (~> 3.2.0)
+      activerecord (~> 3.2, >= 3.2.16)
 
 GEM
   remote: https://rubygems.org/
