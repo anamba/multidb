@@ -11,7 +11,8 @@ Internally, MultiDB refers to tenants as organizations. In addition to the organ
 MultiDB, when used with Rails (ActionController), determines which database to connect to at the beginning of each request by checking for `request.host`, `params[:org_code]`, then `session[:org_code]`. In a test environment, it can will also check the environment variable `RAILS_ORG`. If no organization code is found in any of those places, the sessions database is used (which is one reason it is important that no actual data be stored there).
 
 
-## Compatibility
+## Versioning & Compatibility
+MultiDB follows semantic versioning, but because it is closely tied to Rails/ActiveRecord, it uses the same major/minor version numbers to make it easy to determine which version of MultiDB to use. Patch numbers may vary.
 
 ### Rails & ActiveRecord
 MultiDB 3.2 works with Rails 3.2. A new branch will be created to work with Rails 4.
@@ -26,13 +27,13 @@ MultiDB is known to work with [Makara](https://github.com/taskrabbit/makara) in 
 
 ##Get Started With MultiDB
 
-Install the gem:
+Add it to your Gemfile:
+
+    gem 'multidb', '~> 3.2.0'  # note: MultiDB 3.2 works with Rails 3.2
+
+Or install by hand:
 
     gem install multidb
-
-Or add it to your Gemfile:
-
-    gem 'multidb'
 
 Then have your Organization class inherit from MultiDB::Organization. This gets you:
 
