@@ -1,0 +1,29 @@
+source 'https://rubygems.org'
+
+gem 'rails', '~> 3.2.16'
+gem 'mysql2', '~> 0.3.14'
+
+gem 'multidb', path: '..'
+
+gem 'jquery-rails'
+
+group :development, :test do
+  gem 'annotate', '~> 2.5.0'
+  gem 'rspec-rails', '~> 2.14.0'
+  gem 'factory_girl_rails', '~> 4.3.0', :require => false
+end
+
+group :test do
+  gem 'shoulda', '~> 3.5.0'
+  gem 'faker', '~> 1.2.0'
+  gem 'capybara', '~> 2.1.0'
+  gem 'poltergeist'
+  gem 'simplecov', '~> 0.8.1', :require => false
+end
+
+group :assets do
+  gem 'sass-rails', '~> 3.2.3'
+  gem 'coffee-rails', '~> 3.2.1'
+  # gem 'therubyracer', :platforms => :ruby
+  gem 'uglifier', '>= 1.0.3'
+end
