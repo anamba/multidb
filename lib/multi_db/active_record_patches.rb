@@ -141,6 +141,15 @@ module ActiveRecord
       
     end
     
+    class MySQLDatabaseTasks
+      
+      def purge
+        establish_connection configuration
+        connection.recreate_database configuration['database'], creation_options
+      end
+      
+    end
+    
   end
   
 end

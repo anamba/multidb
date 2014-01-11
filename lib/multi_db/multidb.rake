@@ -249,7 +249,7 @@ db_namespace = namespace :db do
     desc 'Load a schema.rb file into the database'
     task :load => [:environment, :load_config] do
       databases_to_load = case ENV['RAILS_ORG']
-        when nil then [ :sessions, :master, :organization ]
+        when nil then [ :sessions, :master ]
         when 'sessions' then [ :sessions ]
         when 'master' then [ :master ]
         else [ :organization ]
@@ -279,41 +279,8 @@ db_namespace = namespace :db do
     
     # desc "Empty the test databases"
     task :purge => [:environment, :load_config] do
-      abcs = ActiveRecord::Base.configurations
-      
-      # sessions
-      ActiveRecord::Base.connect_to_sessions
-      ActiveRecord::Base.connection.recreate_database(abcs['test']['database'], mysql_creation_options(abcs['test']))
-      
-      # master
-      ActiveRecord::Base.connect_to_master
-      ActiveRecord::Base.connection.recreate_database(ActiveRecord::Base.master_configuration('test')['database'], mysql_creation_options(abcs['test']))
-      
-      # org
-      ActiveRecord::Base.connect_to_organization
-      ActiveRecord::Base.connection.recreate_database(abcs['test']['database'] + '_org1', mysql_creation_options(abcs['test']))
+      ActiveRecord::Tasks::DatabaseTasks.purge ActiveRecord::Base.configurations['test']
+      ActiveRecord::Tasks::DatabaseTasks.purge ActiveRecord::Base.master_configuration('test')
     end
   end
 end
-
-
-# # not sure yet why environment is not loaded before running create_database/drop_database
-# # for now, copied this in from lib/multi_db/active_record_patches.rb
-# module ActiveRecord
-#   class Base
-#     class << self
-#       
-#       def master_configuration(env = nil)
-#         env ||= Rails.env
-#         
-#         # use master db configuration in config/database.yml if present
-#         configurations["master_#{env}"] or Proc.new {
-#           c = configurations[env].dup
-#           c['database'] += '_master'
-#           c
-#         }.call
-#       end
-#       
-#     end
-#   end
-# end
