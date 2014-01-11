@@ -16,7 +16,7 @@ class ActionController::Base
     # try hostname if we don't already have a code in the session
     if !@org && !session[:org_code] && request && request.host
       @org ||= MultiDB::Organization.active.where(:code => $1.gsub('-', '_')).first if request.host =~ /^([-\w\d]+)/
-      @org ||= MultiDB::Organization.active.includes(:hosts).where('organization_hosts.host = ?', request.host).first
+      @org ||= MultiDB::Organization.active.includes(:hosts).where('organization_hosts.host = ?', request.host).references(:organization_hosts).first
     end
     
     if @org
