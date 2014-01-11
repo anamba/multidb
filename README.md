@@ -2,7 +2,7 @@
 
 MultiDB is a multitenant extension for Rails (or just ActiveRecord) that allows you to isolate each tenant into its own individual database without requiring major changes to your application code.
 
-MultiDB is _not_ meant for systems that may have large numbers of tenants; you wouldn't want to have that many databases. It was designed for a system with 100-200 tenants, with the option to go to 1,000, and an absolute upper limit of 10,000. If you anticipate having more, MultiDB may not be an appropriate solution. (MySQL itself does not specify an upper limit on the number of databases, but it will be constrained by open file limits and, in some cases, directory entry limits.)
+MultiDB is _not_ meant for systems that may have large numbers of tenants; you wouldn't want to have that many databases. It was designed for a system with 200-500 tenants, with the option to go to 10,000, and an absolute upper limit of 25,000. If you anticipate having more, MultiDB may not be an appropriate solution. (MySQL itself does not specify an upper limit on the number of databases, but it will be constrained by open file limits and, in some cases, directory entry limits.)
 
 To minimize API changes for you, MultiDB patches ActiveRecord, ActionController and their associated rake tasks as needed to enable database switching at appropriate times and add support for three sets of schemas and migrations. ActiveRecord::SessionStore::Session has also been patched.
 
@@ -25,7 +25,7 @@ Warning: MultiDB works only with mysql2 at present. If you are handy with Ruby, 
 MultiDB is known to work with [Makara](https://github.com/taskrabbit/makara) in a production environment.
 
 
-##Get Started With MultiDB
+## Get Started
 
 Add it to your Gemfile:
 
