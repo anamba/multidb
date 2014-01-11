@@ -90,5 +90,57 @@ module ActiveRecord
       end
       
     end
+    
   end
+  
+  
+  module Tasks
+    
+    module DatabaseTasks
+      
+      alias :create_without_multidb :create
+      def create(*arguments)
+        create_or_drop(:create, arguments)
+      end
+      
+      alias :drop_without_multidb :drop
+      def drop(*arguments)
+        create_or_drop(:drop, arguments)
+      end
+      
+      def create_or_drop(*arguments)
+        create_or_drop = arguments[0]
+        arguments = arguments[1]
+        
+        _config = arguments.shift
+        config_name = ActiveRecord::Base.configurations.invert[_config]
+        is_test = (config_name == 'test')
+        config = _config.dup
+        
+        case ENV['RAILS_ORG']
+        when nil
+          # set default org database
+          raise "No database name specified in configuration \"#{config_name}\"" unless config['database']
+          config['database'] += '_org1'
+        when 'sessions'
+          # do nothing
+        when 'master'
+          config = ActiveRecord::Base.master_configuration(is_test ? 'test' : nil)
+        else
+          config['database'] += '_' + ENV['RAILS_ORG']
+        end
+        
+        arguments.unshift config
+        puts config.inspect
+        
+        case create_or_drop
+          when :create then create_without_multidb(*arguments)
+          when :drop then drop_without_multidb(*arguments)
+        end
+      end
+      
+    end
+    
+  end
+  
 end

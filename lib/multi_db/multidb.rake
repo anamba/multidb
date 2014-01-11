@@ -1,6 +1,5 @@
 #
-# Based on activerecord-3.2.15/lib/active_record/railties/databases.rake
-# Last updated 2013-11-19 by Aaron Namba
+# Based on activerecord-4.0.2/lib/active_record/railties/databases.rake
 #
 # AKN: Warning! All code to support db engines other than mysql has been deleted,
 #      since I know it will never receive proper testing.
@@ -295,66 +294,26 @@ db_namespace = namespace :db do
       ActiveRecord::Base.connection.recreate_database(abcs['test']['database'] + '_org1', mysql_creation_options(abcs['test']))
     end
   end
-  
-  alias :create_database_without_multidb :create_database
-  def create_database(_config)
-    is_test = ActiveRecord::Base.configurations.invert[_config] == 'test'
-    config = _config.dup
-    
-    case ENV['RAILS_ORG']
-    when nil
-      # set default org database
-      config['database'] += '_org1'
-    when 'sessions'
-      # do nothing
-    when 'master'
-      config = ActiveRecord::Base.master_configuration(is_test ? 'test' : nil)
-    else
-      config['database'] += '_' + ENV['RAILS_ORG']
-    end
-    
-    create_database_without_multidb(config)
-  end
 end
 
 
-alias :drop_database_without_multidb :drop_database
-def drop_database(_config)
-  is_test = ActiveRecord::Base.configurations.invert[_config] == 'test'
-  config = _config.dup
-  
-  case ENV['RAILS_ORG']
-  when nil
-    # set default org database
-    config['database'] += '_org1'
-  when 'sessions'
-    # do nothing
-  when 'master'
-    config = ActiveRecord::Base.master_configuration(is_test ? 'test' : nil)
-  else
-    config['database'] += '_' + ENV['RAILS_ORG']
-  end
-  
-  drop_database_without_multidb(config)
-end
-
-# not sure yet why environment is not loaded before running create_database/drop_database
-# for now, copied this in from lib/multi_db/active_record_patches.rb
-module ActiveRecord
-  class Base
-    class << self
-      
-      def master_configuration(env = nil)
-        env ||= Rails.env
-        
-        # use master db configuration in config/database.yml if present
-        configurations["master_#{env}"] or Proc.new {
-          c = configurations[env].dup
-          c['database'] += '_master'
-          c
-        }.call
-      end
-      
-    end
-  end
-end
+# # not sure yet why environment is not loaded before running create_database/drop_database
+# # for now, copied this in from lib/multi_db/active_record_patches.rb
+# module ActiveRecord
+#   class Base
+#     class << self
+#       
+#       def master_configuration(env = nil)
+#         env ||= Rails.env
+#         
+#         # use master db configuration in config/database.yml if present
+#         configurations["master_#{env}"] or Proc.new {
+#           c = configurations[env].dup
+#           c['database'] += '_master'
+#           c
+#         }.call
+#       end
+#       
+#     end
+#   end
+# end
