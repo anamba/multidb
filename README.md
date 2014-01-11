@@ -1,4 +1,4 @@
-#About MultiDB
+# About MultiDB
 
 MultiDB is a multitenant extension for Rails (or just ActiveRecord) that allows you to isolate each tenant into its own individual database without requiring major changes to your application code.
 
@@ -10,12 +10,16 @@ Internally, MultiDB refers to tenants as organizations. In addition to the organ
 
 MultiDB, when used with Rails (ActionController), determines which database to connect to at the beginning of each request by checking for `request.host`, `params[:org_code]`, then `session[:org_code]`. In a test environment, it can will also check the environment variable `RAILS_ORG`. If no organization code is found in any of those places, the sessions database is used (which is one reason it is important that no actual data be stored there).
 
+## Current Status
+
+The present version of MultiDB is extracted from ClarityEHR, a product of [MedNexus](http://mednex.us/) scheduled for release in Fall 2014. An older version (identical concept, similar basic mechanism, but less elegant implementation) has been in production in other products since 2007.
+
 
 ## Versioning & Compatibility
 MultiDB follows semantic versioning, but because it is closely tied to Rails/ActiveRecord, it uses the same major/minor version numbers to make it easy to determine which version of MultiDB to use. Patch numbers may vary.
 
 ### Rails & ActiveRecord
-MultiDB 3.2 works with Rails 3.2. A new branch will be created to work with Rails 4.
+MultiDB 4.0 works with Rails 4.0, MultiDB 3.2 works with Rails 3.2.
 
 The concept should work with just ActiveRecord (no Rails), but this use case has not been tested. (Pull requests welcome.)
 
@@ -29,7 +33,7 @@ MultiDB is known to work with [Makara](https://github.com/taskrabbit/makara) in 
 
 Add it to your Gemfile:
 
-    gem 'multidb', '~> 3.2.0'  # note: MultiDB 3.2 works with Rails 3.2
+    gem 'multidb', '~> 4.0.0'  # note: MultiDB 4.0 works with Rails 4.0
 
 Or install by hand:
 
@@ -63,4 +67,4 @@ Your table will need to have columns for `code` (string) and `active` (boolean),
 
 ## Contributing
 
-Pull requests welcome. Don't forget tests! When adding support for a new adapter, create a new Rails app for your adapter (e.g. `rails _3.2.16_ new testapp_postgresql`), customize database.yml and other files as needed, then add specs to that app.
+Pull requests welcome. Don't forget tests! When adding support for a new adapter, create a new Rails app for your adapter (e.g. `rails _4.0.2_ new testapp_postgresql`), customize database.yml and other files as needed, then add specs to that app.
