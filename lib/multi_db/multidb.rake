@@ -230,7 +230,7 @@ db_namespace = namespace :db do
       require 'active_record/schema_dumper'
       
       databases_to_dump = case ENV['RAILS_ORG']
-        when nil then [ :sessions, :master, :organization ]
+        when nil then [ :sessions, :master ]
         when 'sessions' then [ :sessions ]
         when 'master' then [ :master ]
         else [ :organization ]

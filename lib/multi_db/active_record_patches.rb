@@ -131,7 +131,6 @@ module ActiveRecord
         end
         
         arguments.unshift config
-        puts config.inspect
         
         case create_or_drop
           when :create then create_without_multidb(*arguments)
