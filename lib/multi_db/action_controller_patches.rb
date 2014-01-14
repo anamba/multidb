@@ -7,9 +7,10 @@ class ActionController::Base
     
     # request is first priority
     if params[:org_code]
-      if session[:org_code] && session[:org_code] != params[:org_code]
-        reset_session
-      end
+      # AKN: we should let the gem user decide whether to do this
+      # if session[:org_code] && session[:org_code] != params[:org_code]
+      #   reset_session
+      # end
       @org = MultiDB::Organization.active.where(:code => params[:org_code]).first
     end
     
