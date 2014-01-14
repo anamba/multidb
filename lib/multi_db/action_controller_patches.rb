@@ -29,18 +29,12 @@ class ActionController::Base
     
     if session[:org_code]
       @org ||= MultiDB::Organization.active.where(:code => session[:org_code]).first
-      if @org
-        ActiveRecord::Base.connect_to_organization(session[:org_code], true)
-        return @org
-      end
+      return @org if @org && @org.connect(true)
     end
     
     if Rails.env.test? && ENV['RAILS_ORG']
       @org ||= MultiDB::Organization.active.where(:code => ENV['RAILS_ORG']).first
-      if @org
-        ActiveRecord::Base.connect_to_organization(session[:org_code], true)
-        return @org
-      end
+      return @org if @org && @org.connect(true)
     end
     
     # if we don't issue an establish_connection by now, connect to default db (sessions)
