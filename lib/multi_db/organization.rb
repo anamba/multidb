@@ -2,23 +2,22 @@ module MultiDB
   class Organization < ActiveRecord::Base
     connect_to_master
     
-    has_many :hosts, :class_name => 'OrganizationHost', :inverse_of => :organization, :dependent => :destroy
+    has_many :hosts, class_name: 'OrganizationHost', inverse_of: :organization, dependent: :destroy
     
-    validates :code, :presence => true, :uniqueness => true
-    before_validation :ensure_code
+    validates :code, presence: true, uniqueness: true
+    before_validation :ensure_code, on: :create
     
-    scope :active, -> { where(:active => true) }
+    scope :active, -> { where(active: true) }
     
     def ensure_code
-      if code.blank?
-        return true unless name
-        new_code = name.downcase.gsub(/[^-\w\d]+/, '-')
-        self.code = new_code
-        i = 2
-        while self.class.where(:code => code, :active => true).first
-          self.code = "#{new_code}#{i}"
-          i += 1
-        end
+      return true if name.blank?  # let the validation process continue if there's no name yet
+      
+      self.code = name.downcase.gsub(/[^-\w\d]+/, '-') if code.blank?
+      
+      i, base_code = 1, code
+      while self.class.where(code: code).count > 0
+        i += 1
+        self.code = "#{base_code}#{i}"
       end
     end
     
